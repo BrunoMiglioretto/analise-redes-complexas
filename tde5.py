@@ -52,3 +52,17 @@ if __name__ == '__main__':
         title="Grafo não direcionado",
         ylabel="Centralidade de intermediação"
     )
+
+    top_10_directed = directed_graph.top_k_closeness_centrality(k=10)
+    top_10_undirected = undirected_graph.top_k_closeness_centrality(k=10)
+    
+    plot_top_k(
+        top_k=top_10_directed,
+        title="Grafo direcionado",
+        ylabel="Centralidade de proximidade"
+    )
+    plot_top_k(
+        top_k=top_10_undirected,
+        title="Grafo não direcionado",
+        ylabel="Centralidade de proximidade"
+    )

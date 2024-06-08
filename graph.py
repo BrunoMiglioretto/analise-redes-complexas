@@ -219,3 +219,40 @@ class graph:
         betweenness = {vertex: self._betweenness_centrality(vertex) for vertex in self.adjacency_list}
         sorted_centrality = sorted(betweenness.items(), key=lambda item: item[1], reverse=True)
         return sorted_centrality[:k]
+    
+    def _closeness_centrality(self, vertex):
+        distances = {}
+        for v in self.adjacency_list:
+            if v != vertex:
+                distances[v] = float('inf')
+        
+        distances[vertex] = 0
+        visited = set()
+        visited.add(vertex)
+        queue = [vertex]
+
+        while queue:
+            current_vertex = queue.pop(0)
+            for neighbor in self.adjacency_list[current_vertex]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+                    distances[neighbor] = distances[current_vertex] + 1
+
+        total_distance = sum(distances.values())
+        
+        closeness_centrality = 0
+        for dist in distances.values():
+            closeness_centrality += 1 / dist if dist != 0 else 0
+        
+        if len(self.adjacency_list) > 1:
+            closeness_centrality = (len(distances) - 1) / total_distance * closeness_centrality
+        else:
+            closeness_centrality = 0
+        
+        return closeness_centrality
+    
+    def top_k_closeness_centrality(self, k):
+        closeness = {vertex: self._closeness_centrality(vertex) for vertex in self.adjacency_list}
+        sorted_centrality = sorted(closeness.items(), key=lambda item: item[1], reverse=True)
+        return sorted_centrality[:k]
