@@ -178,9 +178,9 @@ class graph:
         sorted_centrality = sorted(centrality.items(), key=lambda item: item[1], reverse=True)
         return sorted_centrality[:k]
     
-    def _betweenness_centrality(self, vertex):
+    def _betweenness_centrality(self):
         betweenness = {v: 0.0 for v in self.adjacency_list}
-        
+
         for s in self.adjacency_list:
             stack = []
             predecessors = {v: [] for v in self.adjacency_list}
@@ -213,10 +213,10 @@ class graph:
             for v in betweenness:
                 betweenness[v] /= 2.0
         
-        return betweenness[vertex]
+        return betweenness
     
     def top_k_betweenness_centrality(self, k):
-        betweenness = {vertex: self._betweenness_centrality(vertex) for vertex in self.adjacency_list}
+        betweenness = self._betweenness_centrality()
         sorted_centrality = sorted(betweenness.items(), key=lambda item: item[1], reverse=True)
         return sorted_centrality[:k]
     
