@@ -93,6 +93,51 @@ class graph:
             
             self.add_edge(source, target)
     
+    def _dfs(self, node, visited, stack=None):
+        visited.add(node)
+        component = [node]
+        for neighbor in self.adjacency_list[node]:
+            if neighbor not in visited:
+                component.extend(self._dfs(neighbor, visited, stack))
+        if stack is not None:
+            stack.append(node)
+        return component if stack is None else []
+    
+    def _strongly_connected_components(self):
+        stack = []
+        visited = set()
+        for vertex in self.adjacency_list:
+            if vertex not in visited:
+                self._dfs(vertex, visited, stack)
+        
+        transpose_graph = {v: [] for v in self.adjacency_list}
+        for vertex in self.adjacency_list:
+            for neighbor in self.adjacency_list[vertex]:
+                transpose_graph[neighbor].append(vertex)
+
+        visited.clear()
+        scc_list = []
+
+        while stack:
+            vertex = stack.pop()
+            if vertex not in visited:
+                scc = self._dfs(vertex, visited)
+                scc_list.append(scc)
+
+        return len(scc_list)
+
+    def get_components_count(self):
+        if self.undirected:
+            visited = set()
+            components_count = 0
+            for vertex in self.adjacency_list:
+                if vertex not in visited:
+                    self._dfs(vertex, visited)
+                    components_count += 1
+            return components_count
+        else:
+            return self._strongly_connected_components()
+    
     def degree_centrality(self, node):
         n = len(self.adjacency_list)
         if self.undirected:
