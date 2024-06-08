@@ -92,3 +92,10 @@ class graph:
                 self.add_vertex(target)
             
             self.add_edge(source, target)
+    
+    def degree_centrality(self, node):
+        n = len(self.adjacency_list)
+        if self.undirected:
+            return len(self.adjacency_list[node]) / (n - 1)
+        else:
+            return self.out_degree(node) / (n - 1)
