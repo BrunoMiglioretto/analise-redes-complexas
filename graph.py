@@ -3,8 +3,11 @@ class graph:
         self.adjacency_list = {}
         self.undirected = undirected
     
+    def _check_vertex(self, vertex):
+        return vertex in self.adjacency_list
+    
     def add_vertex(self, vertex):
-        if vertex in self.adjacency_list:
+        if self._check_vertex(vertex):
             print(f"O vértice {vertex} já existe...")
         else:
             print(f"Adicionando o vértice {vertex}")
@@ -137,6 +140,31 @@ class graph:
             return components_count
         else:
             return self._strongly_connected_components()
+    
+    def get_spanning_tree(self, start_vertex):
+        if not self._check_vertex(start_vertex):
+            print(f"O vértice {start_vertex} não existe")
+            return [], 0
+        
+        spanning_tree = []
+        total_cost = 0
+        visited = set()
+        edges = [(0, start_vertex, None)]
+
+        while edges:
+            edges.sort()
+            weight, current, from_vertex = edges.pop(0)
+            if current not in visited:
+                visited.add(current)
+                if from_vertex is not None:
+                    spanning_tree.append((from_vertex, current, weight))
+                    total_cost += weight
+
+                for neighbor in self.adjacency_list[current]:
+                    if neighbor not in visited:
+                        edges.append((self.adjacency_list[current][neighbor], neighbor, current))
+
+        return spanning_tree, total_cost
     
     def degree_centrality(self, node):
         n = len(self.adjacency_list)
