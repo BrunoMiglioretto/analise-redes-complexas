@@ -177,3 +177,45 @@ class graph:
         centrality = {vertex: self._degree_centrality(vertex) for vertex in self.adjacency_list}
         sorted_centrality = sorted(centrality.items(), key=lambda item: item[1], reverse=True)
         return sorted_centrality[:k]
+    
+    def _betweenness_centrality(self, vertex):
+        betweenness = {v: 0.0 for v in self.adjacency_list}
+        
+        for s in self.adjacency_list:
+            stack = []
+            predecessors = {v: [] for v in self.adjacency_list}
+            shortest_paths = {v: 0 for v in self.adjacency_list}
+            shortest_paths[s] = 1
+            distances = {v: -1 for v in self.adjacency_list}
+            distances[s] = 0
+            queue = [s]
+            
+            while queue:
+                v = queue.pop(0)
+                stack.append(v)
+                for w in self.adjacency_list[v]:
+                    if distances[w] < 0:
+                        queue.append(w)
+                        distances[w] = distances[v] + 1
+                    if distances[w] == distances[v] + 1:
+                        shortest_paths[w] += shortest_paths[v]
+                        predecessors[w].append(v)
+            
+            dependency = {v: 0 for v in self.adjacency_list}
+            while stack:
+                w = stack.pop()
+                for v in predecessors[w]:
+                    dependency[v] += (shortest_paths[v] / shortest_paths[w]) * (1 + dependency[w])
+                if w != s:
+                    betweenness[w] += dependency[w]
+        
+        if self.undirected:
+            for v in betweenness:
+                betweenness[v] /= 2.0
+        
+        return betweenness[vertex]
+    
+    def top_k_betweenness_centrality(self, k):
+        betweenness = {vertex: self._betweenness_centrality(vertex) for vertex in self.adjacency_list}
+        sorted_centrality = sorted(betweenness.items(), key=lambda item: item[1], reverse=True)
+        return sorted_centrality[:k]
