@@ -166,9 +166,14 @@ class graph:
 
         return spanning_tree, total_cost
     
-    def degree_centrality(self, node):
+    def _degree_centrality(self, vertex):
         n = len(self.adjacency_list)
         if self.undirected:
-            return len(self.adjacency_list[node]) / (n - 1)
+            return len(self.adjacency_list[vertex]) / (n - 1)
         else:
-            return self.out_degree(node) / (n - 1)
+            return self.out_degree(vertex) / (n - 1)
+    
+    def top_k_degree_centrality(self, k):
+        centrality = {vertex: self._degree_centrality(vertex) for vertex in self.adjacency_list}
+        sorted_centrality = sorted(centrality.items(), key=lambda item: item[1], reverse=True)
+        return sorted_centrality[:k]
