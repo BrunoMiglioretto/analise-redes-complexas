@@ -31,9 +31,6 @@ class graph:
 
         self.edges_count += 1
 
-    def has_edge(self, from_vertex, to_vertex):
-        return to_vertex in self.adjacency_list[from_vertex]
-
     def in_degree(self, vertex):
         in_degree = 0
         for neighbor in self.adjacency_list:
