@@ -1,6 +1,7 @@
 from collections import defaultdict
 
-class Grafo():
+
+class Grafo:
     def __init__(self, ehdirecionado=True):
         self.adjacency_list = defaultdict(list)
         self.direcionado = ehdirecionado
@@ -40,7 +41,9 @@ class Grafo():
                 self.adjacency_list[org_nome].append([dest_nome, 0])
             if not self.tem_aresta(dest_nome, org_nome):
                 self.adjacency_list[dest_nome].append([org_nome, 0])
-            if self.tem_aresta(org_nome, dest_nome) and self.tem_aresta(dest_nome, org_nome):
+            if self.tem_aresta(org_nome, dest_nome) and self.tem_aresta(
+                dest_nome, org_nome
+            ):
                 peso = self.get_peso(org_nome, dest_nome) + 1
                 indice_org_dest = self.get_aresta(org_nome, dest_nome)
                 indice_dest_org = self.get_aresta(dest_nome, org_nome)
@@ -56,7 +59,7 @@ class Grafo():
             indice = self.get_aresta(u, v)
             del self.adjacency_list[u][indice]
         else:
-            print('Aresta inexistente!')
+            print("Aresta inexistente!")
 
     def get_aresta(self, org_nome, dest_nome):
         for i, valor in enumerate(self.adjacency_list[org_nome]):
@@ -95,9 +98,8 @@ class Grafo():
 
     def imprime_lista_adjacencias(self):
         for chave, valor in self.adjacency_list.items():
-            print(f"{chave}: ", end=' ')
+            print(f"{chave}: ", end=" ")
             for v in valor:
-                print(f'{v}', end=' -> ')
-            print('\n')
-        return ' '
-
+                print(f"{v}", end=" -> ")
+            print("\n")
+        return " "

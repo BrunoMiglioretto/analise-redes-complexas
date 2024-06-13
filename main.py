@@ -1,17 +1,19 @@
 from grafo import *
 import csv
 
+
 def processar_linha(linha):
     diretor = linha[3].strip().upper()
     elenco = linha[4].strip().upper()
 
     if diretor and elenco:
-        return [diretor.replace(' ', '').split(','), elenco.replace(' ', '').split(',')]
+        return [diretor.replace(" ", "").split(","), elenco.replace(" ", "").split(",")]
     return None
 
+
 def abri_e_processar_arquivo(nome_do_arquivo):
-    with open(nome_do_arquivo, 'r', encoding='utf-8') as arquivo:
-        leitor_csv = csv.reader(arquivo, delimiter=',')
+    with open(nome_do_arquivo, "r", encoding="utf-8") as arquivo:
+        leitor_csv = csv.reader(arquivo, delimiter=",")
         next(leitor_csv)
         linhas_processadas = []
         for linha in leitor_csv:
@@ -20,7 +22,10 @@ def abri_e_processar_arquivo(nome_do_arquivo):
                 linhas_processadas.append(linha_processada)
     return linhas_processadas
 
-linhas_processadas = abri_e_processar_arquivo('TDE5 dataset/netflix_amazon_disney_titles.csv')
+
+linhas_processadas = abri_e_processar_arquivo(
+    "TDE5 dataset/netflix_amazon_disney_titles.csv"
+)
 
 # # EX 001 parte 1
 # G = Grafo()
@@ -38,8 +43,8 @@ for linha in linhas_processadas:
         for j in range(i + 1, len(linha[1])):
             G.adiciona_aresta(linha[1][i], linha[1][j])
 
-print(f'O número de vértices é: {G.get_ordem()}.')
-print(f'O número de arestas é: {G.get_tamanho()}.')
+print(f"O número de vértices é: {G.get_ordem()}.")
+print(f"O número de arestas é: {G.get_tamanho()}.")
 
 
 # G = Grafo(False)
