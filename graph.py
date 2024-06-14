@@ -156,14 +156,14 @@ class graph:
         else:
             return self.out_degree(vertex) / (n - 1)
 
-    def top_k_degree_centrality(self, k):
+    def get_all_degree_centrality(self):
         centrality = {
             vertex: self._degree_centrality(vertex) for vertex in self.adjacency_list
         }
         sorted_centrality = sorted(
             centrality.items(), key=lambda item: item[1], reverse=True
         )
-        return sorted_centrality[:k]
+        return sorted_centrality
 
     def _betweenness_centrality(self):
         betweenness = {v: 0.0 for v in self.adjacency_list}

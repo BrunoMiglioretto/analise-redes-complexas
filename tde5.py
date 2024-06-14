@@ -4,6 +4,18 @@ import pandas as pd
 from graph import graph
 
 
+def plot_histogram(data, title, ylabel):
+    _, centralities = zip(*data)
+
+    plt.figure(figsize=(10, 5))
+    plt.title(title)
+    plt.hist(centralities)
+    plt.xlabel("Vértices")
+    plt.ylabel(ylabel)
+    plt.xticks(rotation=30)
+    plt.show()
+
+
 def plot_top_k(top_k, title, ylabel):
     vertices, centralities = zip(*top_k)
 
@@ -31,12 +43,12 @@ if __name__ == "__main__":
 
     # Exercício 1
     print("Grafo entre diretores e atores:")
-    print(f"Quantidade de vertices: {len(director_actor_collaboration_graph.vertices_count)}")
-    print(f"Quantidade de arestas: {len(director_actor_collaboration_graph.edges_count)}")
+    print(f"Quantidade de vertices: {director_actor_collaboration_graph.vertices_count}")
+    print(f"Quantidade de arestas: {director_actor_collaboration_graph.edges_count}")
 
     print("Grafo entre atores:")
-    print(f"Quantidade de vertices: {len(actors_collaboration_graph.vertices_count)}")
-    print(f"Quantidade de arestas: {len(actors_collaboration_graph.edges_count)}")
+    print(f"Quantidade de vertices: {actors_collaboration_graph.vertices_count}")
+    print(f"Quantidade de arestas: {actors_collaboration_graph.edges_count}")
 
     # Exercício 2
     print("Quantidade de componentes:")
@@ -55,12 +67,22 @@ if __name__ == "__main__":
     print(f"Custo total: {total_cost}")
 
     # Exercício 4
-
+    print("Distribuição da centralidade dos vértices:")
+    plot_histogram(
+        data=director_actor_collaboration_graph.get_all_degree_centrality(),
+        title="Grafo não direcionado",
+        ylabel="Centralidade de grau",
+    )
+    plot_histogram(
+        data=actors_collaboration_graph.get_all_degree_centrality(),
+        title="Grafo não direcionado",
+        ylabel="Centralidade de grau",
+    )
 
     # Exercício 5
     print("Buscando os 10 vértices com maiores graus de centralidade: ")
-    top_10_directed = director_actor_collaboration_graph.top_k_degree_centrality(k=10)
-    top_10_undirected = actors_collaboration_graph.top_k_degree_centrality(k=10)
+    top_10_directed = director_actor_collaboration_graph.get_all_degree_centrality()[:10]
+    top_10_undirected = actors_collaboration_graph.get_all_degree_centrality()[:10]
     plot_top_k(
         top_k=top_10_directed, title="Grafo direcionado", ylabel="Centralidade de grau"
     )
